@@ -3,7 +3,9 @@ package com.meteors.android.dotcraftdemo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,13 +18,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding       //activity_main的ViewBinding
 
+    private lateinit var dotContainer:List<RecyclerView>    //将三个RecyclerView放入列表中
+
+    private lateinit var ringList: List<ImageView>          //将所有Ring的ImageView放入列表中
+
+    private var degree = 3          //规模3x3
+
     private val dotsList = ArrayList<List<Dot>>()       //用于存储三个Dot集合，每个Dot集合保存若干个黑白Dot
 
     private val ringPosition = ArrayList<Int>()         //保存ring的随机位置
 
     private val dotPosition = ArrayList<Int>()          //保存dot的随机位置
-
-    private var degree = 3          //规模3x3
 
     private var startTime: Long = 0     //保存游戏起始时间
 
@@ -32,6 +38,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        dotContainer = listOf<RecyclerView>(
+            binding.dotContainerRow0,
+            binding.dotContainerRow1,
+            binding.dotContainerRow2
+        )
+        ringList = listOf(
+            binding.ring0,
+            binding.ring1,
+            binding.ring2,
+            binding.ring3,
+            binding.ring4,
+            binding.ring5,
+            binding.ring6,
+            binding.ring7,
+            binding.ring8
+        )
+
         initDots()          //初始化Dot位置
         initRings()         //初始化Ring位置
 
@@ -42,22 +65,27 @@ class MainActivity : AppCompatActivity() {
             start()
         }
 
-        //submit为完成按钮，判断关灯成功逻辑，成功的话计算总时间
-        binding.submit.setOnClickListener {
+        //submit为完成按钮，通过judge()判断关灯是否成功，成功的话计算总时间
+        binding.submitBtn.setOnClickListener {
             if (judge()) {
-                endTime = binding.timer.drawingTime
+                endTime = SystemClock.elapsedRealtime()     //获取结束时间
+                //Log.d(TAG, "结束时间 $endTime")
                 binding.timer.stop()
-                val totalTime = (endTime - startTime) / 1000.0
-                binding.submit.visibility = View.INVISIBLE
-                Toast.makeText(this, "总用时 $totalTime 秒", Toast.LENGTH_SHORT).show()
+                val totalTime = (endTime - startTime) / 1000.0      //计算总时间
+                binding.submitBtn.visibility = View.INVISIBLE
+                Toast.makeText(
+                    this,
+                    "成功啦！ 总用时 $totalTime 秒",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(this, "未成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "搞错了 再来~", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     /**
-     * 1. 初始化 Dot：为每一列取随机数，获取dot的随机位置，并保存
+     * 1. 初始化 Dot：为每一列取一个随机数，获得dot的随机位置，并保存
      * 2. 配置 RecyclerView的Adapter和LayoutManager,添加滑动监听
      */
     private fun initDots() {
@@ -86,11 +114,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         //配置RecyclerView，定位到中间位置，设置滑动监听，保持每个界面显示完整的三个item，位置固定
-        val dotContainer = listOf<RecyclerView>(
-            binding.dotContainerRow0,
-            binding.dotContainerRow1,
-            binding.dotContainerRow2
-        )
         for (i in 0 until degree) {
             dotContainer[i].apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
@@ -104,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                         val lastPosition = layoutManager.findLastVisibleItemPosition()
                         val firstP = firstPosition % 3
                         val lastP = lastPosition % 3
-                        if (firstP == lastP) {      //表示页面中出现四个item
+                        if (firstP == lastP) {      //表示页面中出现四个item，滑动
                             recyclerView.smoothScrollToPosition(lastPosition)
                         }
                     }
@@ -120,17 +143,6 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initRings() {
         ringPosition.clear()
-        val ringList = listOf(
-            binding.ring0,
-            binding.ring1,
-            binding.ring2,
-            binding.ring3,
-            binding.ring4,
-            binding.ring5,
-            binding.ring6,
-            binding.ring7,
-            binding.ring8
-        )
         for (element in ringList) {
             element.visibility = View.INVISIBLE
         }
@@ -153,14 +165,25 @@ class MainActivity : AppCompatActivity() {
             base = startTime
             start()
         }
-        binding.submit.visibility = View.VISIBLE
+        binding.submitBtn.visibility = View.VISIBLE
     }
 
     /**
      * 判断ring和dot是否对应
+     * (firstPosition + ringPosition[0]) % 3 为圆环ring对应的位置
+     * dotPosition[0] 为白色dot的位置，判断二者是否相等即可
      */
     private fun judge(): Boolean {
-        //完成判断逻辑
+        //Log.d(TAG, "ringPosition ${ringPosition.toString()}")
+        //Log.d(TAG, "dotPosition ${dotPosition.toString()}")
+        for (i in 0 until degree) {
+            val layoutManager = dotContainer[i].layoutManager as LinearLayoutManager
+            val firstPosition = layoutManager.findFirstVisibleItemPosition()
+            val result = (firstPosition + ringPosition[i]) % 3 == dotPosition[i]
+            if (!result) {
+                return false
+            }
+        }
         return true
     }
 
@@ -181,7 +204,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //
     private class DotHolder(itemBinding: DotItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         private val dot = itemBinding.dot
@@ -208,7 +230,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return dots.size        //Item数量
+            return dots.size
         }
     }
 }
