@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFAF3"
+    tools:context=".MainActivity">
+
+    <Chronometer
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/container_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/container_layout"
+        android:layout_width="290dp"
+        android:layout_height="290dp"
+        android:background="@drawable/shape_background"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ring0"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/ring1"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_toEndOf="@id/ring0"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring2"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_toEndOf="@id/ring1"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring3"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring0"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring4"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring1"
+            android:layout_toEndOf="@id/ring3"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring5"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring2"
+            android:layout_toEndOf="@id/ring4"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring6"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring3"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring7"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring4"
+            android:layout_toEndOf="@id/ring6"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/ring8"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@id/ring5"
+            android:layout_toEndOf="@id/ring7"
+            android:padding="10dp"
+            android:src="@drawable/shape_ring_white"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="290dp"
+        android:layout_height="290dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dot_container_row0"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dot_container_row1"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/dot_container_row0"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dot_container_row2"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/dot_container_row1"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_layout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

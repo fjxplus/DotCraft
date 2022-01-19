@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="90dp"
+    android:layout_height="90dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dot_card"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="12dp">
+
+        <ImageView
+            android:id="@+id/dot"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/black_dot_content" />
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

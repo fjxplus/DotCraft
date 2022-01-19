@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">关灯小游戏</string>
+    <string name="black_dot_content">black_dot</string>
+    <string name="white_dot_content">white_dot</string>
+    <string name="submit">完成啦</string>
+    <string name="restart">重新开始</string>
+</resources>
